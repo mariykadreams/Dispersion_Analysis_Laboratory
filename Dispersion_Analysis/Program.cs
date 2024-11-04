@@ -46,15 +46,12 @@ class Program
         double F_observed = factorVariance / residualVariance;
         Console.WriteLine($"Спостережуване значення F: {F_observed:F2}");
 
-
         double F_critical_table = GetFCriticalValueFromTable(fTable, df1, df2);
         Console.WriteLine($"Критичне значення F (з таблиці): {F_critical_table:F2}");
 
 
         double F_critical_library = GetFCriticalValueLibrary(0.05, df1, df2);
         Console.WriteLine($"Критичне значення F (бібліотека): {F_critical_library:F2}");
-
-
 
         if (F_observed >= F_critical_table)
         {
@@ -64,13 +61,7 @@ class Program
         {
             Console.WriteLine("Не відхиляємо нульову гіпотезу: відстань не має суттєвого впливу на заповнюваність.");
         }
-
-
     }
-
-
-
-    // Таблиця критичних значень F-критерію для alpha = 0.05
     static readonly double[,] fTable = {
         { 161.4, 199.5, 215.7, 224.6, 230.2, 234.0, 236.8, 238.9, 240.5, 241.9 },
         { 18.51, 19.0, 19.16, 19.25, 19.3, 19.33, 19.35, 19.37, 19.38, 19.4 },
@@ -90,21 +81,14 @@ class Program
         { 4.49, 3.63, 3.24, 3.01, 2.85, 2.74, 2.66, 2.59, 2.54, 2.49 }
     };
 
-
     static double GetFCriticalValueFromTable(double[,] fTable, int df1, int df2)
     {
-        // Учитываем, что индекс `df2` идет по строкам, а `df1` по столбцам.
         return fTable[df2 - 1, df1 - 1];
     }
-
-
-
-
-
-
-
-
-
+    static double GetFCriticalValueLibrary(double alpha, int numeratorDf, int denominatorDf)
+    {
+        return FisherSnedecor.InvCDF(numeratorDf, denominatorDf, 1 - alpha);
+    }
     static double CalculateAverage(double[] data)
     {
         double sum = 0;
@@ -161,8 +145,6 @@ class Program
         return factorSumOfSquares;
     }
 
-    static double GetFCriticalValueLibrary(double alpha, int numeratorDf, int denominatorDf)
-    {
-        return FisherSnedecor.InvCDF(numeratorDf, denominatorDf, 1 - alpha);
-    }
+   
 }
+ 
